@@ -1,6 +1,6 @@
 # Analysis: Meta Muse's "not-a-mused" Vulnerability — Why a Secure VM Wasn't Enough
 
-*My analysis of a real, publicly disclosed vulnerability. Original discovery and credit: **Patrick Wardle** (founder, Objective-See Foundation; author of *The Art of Mac Malware*), disclosed September 21, 2026. This is my own breakdown of the vulnerability and the architectural question it raises — not a claim of original discovery.*
+*My analysis of a real, publicly disclosed vulnerability. Original discovery and credit: **Patrick Wardle** (founder, Objective-See Foundation; author of *The Art of Mac Malware*), disclosed September 21, 2026. This is my own breakdown of the vulnerability and the architectural question it raises, not a claim of original discovery.*
 
 ---
 
