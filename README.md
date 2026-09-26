@@ -14,10 +14,6 @@ I'm an M.S. Cybersecurity Management student at San Diego State University, with
 
 *(More to come — writeups and lab analyses added as I complete them.)*
 
-## A note on scope and sourcing
-
-Where a writeup covers a vulnerability I didn't personally discover, it's clearly credited to the original researcher up front — these are my own technical analysis and reasoning about *why* something works the way it does, not claims of discovery. CTF and lab writeups follow each platform's own publication rules (e.g., no writeups of still-active HackTheBox machines, no posted flags for scored TryHackMe content).
-
 ## Contact
 
 [LinkedIn](https://linkedin.com/in/maksym-chunikhin)
