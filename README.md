@@ -12,7 +12,7 @@ I'm an M.S. Cybersecurity Management student at San Diego State University, with
 |---|---|
 | [Meta Muse "not-a-mused" Vulnerability Analysis](./muse-ai-not-a-mused-analysis.md) | Architectural breakdown of a real, publicly disclosed AI agent vulnerability (discovered by Patrick Wardle) — why isolating an AI agent's compute in a "Secure VM" didn't stop a local trust-boundary bypass, and what that pattern says about securing agentic AI more broadly. |
 
-*(More to come — CTF room writeups and lab analyses added as I complete them.)*
+*(More to come — writeups and lab analyses added as I complete them.)*
 
 ## A note on scope and sourcing
 
