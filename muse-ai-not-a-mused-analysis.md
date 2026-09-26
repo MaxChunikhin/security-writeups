@@ -18,15 +18,15 @@ Wardle found that Muse relies on an **undocumented setting**, `endo_voyager_dict
 
 The problem: **any unprivileged local process can rewrite this setting, no special macOS permissions or entitlements required.** Once changed, the next time the user clicks the microphone and dictates a prompt, that audio (and everything Muse does with it) is sent to a server the attacker controls instead of Meta's.
 
-**Prerequisite:** this is a *local* attack. The attacker needs to already be running code on the victim's Mac, through existing malware, or through social engineering like a [ClickFix attack](https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/) (a fake CAPTCHA that tricks a user into pasting and running a malicious command themselves). It is *not* a remote, zero-click hole on its own — that's an important nuance and worth stating clearly in any writeup, rather than overstating the threat.
+**Prerequisite:** this is a *local* attack. The attacker needs to already be running code on the victim's Mac, through existing malware, or through social engineering like a [ClickFix attack](https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/) (a fake CAPTCHA that tricks a user into pasting and running a malicious command themselves). It is *not* a remote, zero-click hole on its own, that's an important nuance and worth stating clearly in any writeup, rather than overstating the threat.
 
 ## 3. What an attacker gains
 
 Once dictation traffic is redirected, Wardle demonstrated three escalating impacts:
 
-1. **Audio interception** — capturing the raw content of what the user says to Muse.
-2. **Prompt injection** — the attacker can insert their own instructions into the stream, and Muse has no reliable way to tell attacker-supplied input apart from the real user's input. This is the general, unsolved problem with AI agents: they can't inherently distinguish trusted instructions from untrusted data.
-3. **Authentication token theft** — because Muse authenticates itself to act on the user's behalf, stealing that token hands the attacker the same standing access Muse has: email, messaging, calendar, files, camera, and (via device linking) a paired iPhone's location.
+1. **Audio interception** - capturing the raw content of what the user says to Muse.
+2. **Prompt injection** - the attacker can insert their own instructions into the stream, and Muse has no reliable way to tell attacker-supplied input apart from the real user's input. This is the general, unsolved problem with AI agents: they can't inherently distinguish trusted instructions from untrusted data.
+3. **Authentication token theft** - because Muse authenticates itself to act on the user's behalf, stealing that token hands the attacker the same standing access Muse has: email, messaging, calendar, files, camera, and (via device linking) a paired iPhone's location.
 
 Wardle's public proof-of-concept (`not-a-mused`, on GitHub) demonstrated writing malicious files to disk, taking photos through the Mac's camera, and pulling the real-time location of a linked iPhone, showing the reach extends past the compromised Mac itself.
 
