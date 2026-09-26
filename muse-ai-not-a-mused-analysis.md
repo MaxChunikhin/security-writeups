@@ -1,4 +1,4 @@
-# Analysis: Meta Muse's "not-a-mused" Vulnerability — Why a Secure VM Wasn't Enough
+# Analysis: Meta Muse's "not-a-mused" Vulnerability and Why a Secure VM Wasn't Enough
 
 *My analysis of a real, publicly disclosed vulnerability. Original discovery and credit: **Patrick Wardle** (founder, Objective-See Foundation; author of *The Art of Mac Malware*), disclosed September 21, 2026. This is my own breakdown of the vulnerability and the architectural question it raises, not a claim of original discovery.*
 
@@ -8,7 +8,7 @@
 
 Meta launched **Muse**, a personal AI agent for macOS, in September 2026. Unlike a chatbot, Muse is agentic, it's designed to act on the user's behalf: scheduling appointments, making purchases, drafting documents, and reading/writing across email, calendar, messaging, and even a linked iPhone. To do any of that, users grant it access to the microphone, camera, files, and multiple linked accounts.
 
-The app was a hit, reportedly reaching #1 in the US App Store within days and around 2.5 million downloads in its first two weeks. Meta marketed its security posture heavily: a **"Secure VM"** (Muse's actual reasoning/compute runs in an isolated, dedicated virtual machine on Meta's own cloud infrastructure, not on the user's Mac) paired with a local component called **"Sentinel"**, meant to mediate what data flows from the user's machine up to that VM. Meta called this "first-of-its-kind" privacy and security protection, and backed it with bug bounty rewards of up to $300,000.
+The app was very popular, even reaching #1 in the US App Store within days and around 2.5 million downloads in its first two weeks. Meta marketed its security posture heavily: a **"Secure VM"** (Muse's actual reasoning/compute runs in an isolated, dedicated virtual machine on Meta's own cloud infrastructure, not on the user's Mac) paired with a local component called **"Sentinel"**, meant to mediate what data flows from the user's machine up to that VM. Meta called this "first-of-its-kind" privacy and security protection, and backed it with bug bounty rewards of up to $300,000.
 
 Thirteen days after launch, Patrick Wardle published a working zero-day.
 
@@ -32,7 +32,7 @@ Wardle's public proof-of-concept (`not-a-mused`, on GitHub) demonstrated writing
 
 ## 4. The architectural question
 
-What makes this vulnerability interesting to me is that the Secure VM itself did not really fail. Meta put a lot of effort into isolating Muse's reasoning, credentials, and tools inside its cloud environment. Sentinel is supposed to act as the permission authority for connector actions and network egress inside that environment. The problem is that this attack happened before those protections really mattered. The vulnerable dictation setting lived on the user's Mac, and an unprivileged local process could change where Muse sent the user's voice input. If the input is redirected before it ever reaches the trusted Meta infrastructure, a heavily secured VM on the other end does not protect that part of the data flow.
+What makes this vulnerability interesting to me is that the Secure VM itself did not really fail. Meta put a lot of effort into isolating Muse's reasoning, credentials, and tools inside its cloud environment. Sentinel is supposed to act as the permission authority for connector actions and network the exit inside that environment. The problem is that this attack happened before those protections really mattered. The vulnerable dictation setting lived on the user's Mac, and an unprivileged local process could change where Muse sent the user's voice input. If the input is redirected before it ever reaches the trusted Meta infrastructure, a heavily secured VM on the other end does not protect that part of the data flow.
 
 That makes this more of a **trust-boundary problem** than a failure of virtualization itself. Meta secured the cloud environment where the agent operates, but a security-sensitive piece of local configuration was still outside that protection. The design assumed the local client would send input to the intended transcription service, but the destination itself could be changed by software that did not need elevated privileges. Once that assumption failed, the protections deeper in the architecture could be bypassed.
 
