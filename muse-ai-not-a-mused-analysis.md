@@ -6,9 +6,9 @@
 
 ## 1. Background
 
-Meta launched **Muse**, a personal AI agent for macOS, in September 2026. Unlike a chatbot, Muse is agentic — it's designed to act on the user's behalf: scheduling appointments, making purchases, drafting documents, and reading/writing across email, calendar, messaging, and even a linked iPhone. To do any of that, users grant it access to the microphone, camera, files, and multiple linked accounts.
+Meta launched **Muse**, a personal AI agent for macOS, in September 2026. Unlike a chatbot, Muse is agentic, it's designed to act on the user's behalf: scheduling appointments, making purchases, drafting documents, and reading/writing across email, calendar, messaging, and even a linked iPhone. To do any of that, users grant it access to the microphone, camera, files, and multiple linked accounts.
 
-The app was a hit — reportedly reaching #1 in the US App Store within days and around 2.5 million downloads in its first two weeks. Meta marketed its security posture heavily: a **"Secure VM"** (Muse's actual reasoning/compute runs in an isolated, dedicated virtual machine on Meta's own cloud infrastructure, not on the user's Mac) paired with a local component called **"Sentinel"**, meant to mediate what data flows from the user's machine up to that VM. Meta called this "first-of-its-kind" privacy and security protection, and backed it with bug bounty rewards of up to $300,000.
+The app was a hit, reportedly reaching #1 in the US App Store within days and around 2.5 million downloads in its first two weeks. Meta marketed its security posture heavily: a **"Secure VM"** (Muse's actual reasoning/compute runs in an isolated, dedicated virtual machine on Meta's own cloud infrastructure, not on the user's Mac) paired with a local component called **"Sentinel"**, meant to mediate what data flows from the user's machine up to that VM. Meta called this "first-of-its-kind" privacy and security protection, and backed it with bug bounty rewards of up to $300,000.
 
 Thirteen days after launch, Patrick Wardle published a working zero-day.
 
@@ -16,9 +16,9 @@ Thirteen days after launch, Patrick Wardle published a working zero-day.
 
 Wardle found that Muse relies on an **undocumented setting**, `endo_voyager_dictation_endpoint`, which controls where the app sends the audio of a user's dictated voice prompts. Normally, this points to Meta's own servers.
 
-The problem: **any unprivileged local process can rewrite this setting — no special macOS permissions or entitlements required.** Once changed, the next time the user clicks the microphone and dictates a prompt, that audio (and everything Muse does with it) is sent to a server the attacker controls instead of Meta's.
+The problem: **any unprivileged local process can rewrite this setting, no special macOS permissions or entitlements required.** Once changed, the next time the user clicks the microphone and dictates a prompt, that audio (and everything Muse does with it) is sent to a server the attacker controls instead of Meta's.
 
-**Prerequisite:** this is a *local* attack. The attacker needs to already be running code on the victim's Mac — through existing malware, or through social engineering like a [ClickFix attack](https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/) (a fake CAPTCHA that tricks a user into pasting and running a malicious command themselves). It is *not* a remote, zero-click hole on its own — that's an important nuance and worth stating clearly in any writeup, rather than overstating the threat.
+**Prerequisite:** this is a *local* attack. The attacker needs to already be running code on the victim's Mac, through existing malware, or through social engineering like a [ClickFix attack](https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/) (a fake CAPTCHA that tricks a user into pasting and running a malicious command themselves). It is *not* a remote, zero-click hole on its own — that's an important nuance and worth stating clearly in any writeup, rather than overstating the threat.
 
 ## 3. What an attacker gains
 
@@ -28,7 +28,7 @@ Once dictation traffic is redirected, Wardle demonstrated three escalating impac
 2. **Prompt injection** — the attacker can insert their own instructions into the stream, and Muse has no reliable way to tell attacker-supplied input apart from the real user's input. This is the general, unsolved problem with AI agents: they can't inherently distinguish trusted instructions from untrusted data.
 3. **Authentication token theft** — because Muse authenticates itself to act on the user's behalf, stealing that token hands the attacker the same standing access Muse has: email, messaging, calendar, files, camera, and (via device linking) a paired iPhone's location.
 
-Wardle's public proof-of-concept (`not-a-mused`, on GitHub) demonstrated writing malicious files to disk, taking photos through the Mac's camera, and pulling the real-time location of a linked iPhone — showing the reach extends past the compromised Mac itself.
+Wardle's public proof-of-concept (`not-a-mused`, on GitHub) demonstrated writing malicious files to disk, taking photos through the Mac's camera, and pulling the real-time location of a linked iPhone, showing the reach extends past the compromised Mac itself.
 
 ## 4. The architectural question
 
